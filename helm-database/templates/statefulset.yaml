@@ -25,8 +25,7 @@ spec:
       containers:
       - name: mysql
         image: "iamroyalreddy/mysql:{{ .Values.statefulset.imageVersion }}"
-        args:
-        - "--ignore-db-dir=lost+found"
+        args: []
         envFrom:
         - secretRef:
             name: mysql

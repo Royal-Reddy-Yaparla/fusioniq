@@ -8,12 +8,12 @@ metadata:
     project: fusioniq
     tier: db
 spec:
-  # type: LoadBalancer
+  type: LoadBalancer
   ports:
   - protocol: TCP
     port: 3306 #service-port
     targetPort: 3306
-  clusterIP: None
+  # clusterIP: None
   selector:
     app: mysql
     project: fusioniq
