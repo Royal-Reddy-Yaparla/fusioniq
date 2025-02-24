@@ -36,8 +36,7 @@ spec:
       containers:
       - name: mysql
         image: iamroyalreddy/mysql:8.0.41
-        args:
-        - "--ignore-db-dir=lost+found"
+        args: []
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
