@@ -32,7 +32,7 @@ metadata:
   name: backend
   namespace: fusioniq
 spec:
-  type: LoadBalancer
+  clusterIP: None
   selector:
     name: backend
     project: fusioniq
