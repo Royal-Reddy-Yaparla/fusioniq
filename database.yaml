@@ -33,9 +33,13 @@ spec:
         project: fusioniq
         tier: db
     spec:
+      securityContext:
+        fsGroup: 999
       containers:
       - name: mysql
         image: iamroyalreddy/mysql:8.0.41
+        securityContext:
+          runAsUser: 999
         args: []
         env:
         - name: MYSQL_ROOT_PASSWORD
