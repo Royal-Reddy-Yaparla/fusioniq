@@ -6,8 +6,8 @@ metadata:
 type: Opaque
 data:
   MYSQL_ROOT_PASSWORD: QWRtaW5AMTIz
-  MYSQL_PASSWORD: QWRtaW5AMTIz
-  MYSQL_USER: YWRtaW4=
+  SPRING_DATASOURCE_USERNAME: QWRtaW5AMTIz
+  SPRING_DATASOURCE_PASSWORD: YWRtaW4=
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -51,12 +51,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql
-              key: MYSQL_PASSWORD
+              key: SPRING_DATASOURCE_PASSWORD  
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
               name: mysql
-              key: MYSQL_USER
+              key: SPRING_DATASOURCE_USERNAME  
         volumeMounts:
         - name: mysql
           mountPath: /var/lib/mysql

@@ -13,8 +13,8 @@ metadata:
   namespace: fusioniq
 type: Opaque
 data:
-  MYSQL_PASSWORD: QWRtaW5AMTIz  # Base64 for "Admin@123"
-  MYSQL_USER: YWRtaW4=          # Base64 for "admin"
+  SPRING_DATASOURCE_PASSWORD: QWRtaW5AMTIz  # Base64 for "Admin@123"
+  SPRING_DATASOURCE_USERNAME: YWRtaW4=          # Base64 for "admin"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -53,12 +53,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: backend
-              key: MYSQL_USER
+              key: SPRING_DATASOURCE_USERNAME
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: backend
-              key: MYSQL_PASSWORD
+              key: SPRING_DATASOURCE_PASSWORD
 ---
 apiVersion: v1
 kind: Service
