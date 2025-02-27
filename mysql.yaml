@@ -92,9 +92,8 @@ spec:
         - metadata:
             name: mysql-data
           spec:
-            accessModes:
-              - ReadWriteOnce
+            accessModes: [ "ReadWriteOnce" ]
+            storageClassName: "ebs-sc"
             resources:
               requests:
                 storage: 10Gi
-            storageClassName: gp2
