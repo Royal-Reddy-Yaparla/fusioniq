@@ -72,9 +72,13 @@ spec:
       labels:
         app: mysql
     spec:
+      securityContext:
+        fsGroup: 999
       containers:
       - name: mysql
         image: iamroyalreddy/mysql:8.0.41
+        securityContext:
+          runAsUser: 999
         ports:
         - containerPort: 3306
         env:
