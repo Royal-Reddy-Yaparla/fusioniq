@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql
+  name: backend
   namespace: fusioniq
 data:
   SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-master.fusioniq.svc.cluster.local:3306/prod?createDatabaseIfNotExist=true"
@@ -9,7 +9,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mysql
+  name: backend
   namespace: fusioniq
 type: Opaque
 data:
@@ -47,17 +47,17 @@ spec:
         - name: SPRING_DATASOURCE_URL  # Fixed Name
           valueFrom:
             configMapKeyRef:
-              name: mysql
+              name: backend
               key: SPRING_DATASOURCE_URL
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mysql
+              name: backend
               key: MYSQL_USER
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql
+              name: backend
               key: MYSQL_PASSWORD
 ---
 apiVersion: v1
