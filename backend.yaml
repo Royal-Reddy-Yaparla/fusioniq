@@ -1,3 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql
+  namespace: fusioniq
+data:
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-master.fusioniq.svc.cluster.local:3306/prod?createDatabaseIfNotExist=true"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql
+  namespace: fusioniq
+type: Opaque
+data:
+  MYSQL_PASSWORD: QWRtaW5AMTIz  # Base64 for "Admin@123"
+  MYSQL_USER: YWRtaW4=          # Base64 for "admin"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,15 +26,15 @@ metadata:
     project: fusioniq
     tier: app 
 spec:
-  replicas: 2
+  replicas: 3
   selector:
-    matchLabels: # deployment-set labels
+    matchLabels: 
       name: backend
       project: fusioniq
       tier: app
-  template: # pod defination
+  template: 
     metadata:
-      labels: # pod labels
+      labels: 
         name: backend
         project: fusioniq
         tier: app
@@ -25,6 +43,22 @@ spec:
       - name: backend
         image: iamroyalreddy/fusion:latest
         imagePullPolicy: Always
+        env:
+        - name: SPRING_DATASOURCE_URL  # Fixed Name
+          valueFrom:
+            configMapKeyRef:
+              name: mysql
+              key: SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: MYSQL_USER
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: MYSQL_PASSWORD
 ---
 apiVersion: v1
 kind: Service
@@ -32,7 +66,6 @@ metadata:
   name: backend
   namespace: fusioniq
 spec:
-  clusterIP: None
   selector:
     name: backend
     project: fusioniq
