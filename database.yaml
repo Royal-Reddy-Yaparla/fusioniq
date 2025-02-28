@@ -5,7 +5,6 @@ metadata:
   namespace: fusioniq
 type: Opaque
 data:
-  MYSQL_ROOT_PASSWORD: QWRtaW5AMTIz
   SPRING_DATASOURCE_USERNAME: QWRtaW5AMTIz
   SPRING_DATASOURCE_PASSWORD: YWRtaW4=
 ---
@@ -101,7 +100,10 @@ metadata:
     tier: db
 spec:
   selector:
-    statefulset.kubernetes.io/pod-name: mysql-0
+    app: mysql
+    project: fusioniq
+    tier: db
+    # statefulset.kubernetes.io/pod-name: mysql-0
   ports:
     - name: mysql
       port: 3306
