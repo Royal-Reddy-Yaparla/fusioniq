@@ -40,7 +40,8 @@ spec:
         image: iamroyalreddy/mysql:8.0.41
         securityContext:
           runAsUser: 999
-        args: []
+        args: 
+          - "--default-authentication-plugin=mysql_native_password"
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
