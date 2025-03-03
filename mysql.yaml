@@ -5,7 +5,6 @@ metadata:
   namespace: fusioniq
 type: Opaque
 data:
-  MYSQL_ROOT_PASSWORD: QWRtaW5AMTIz
   SPRING_DATASOURCE_USERNAME: YWRtaW4=
   SPRING_DATASOURCE_PASSWORD: QWRtaW5AMTIz
 ---
@@ -40,14 +39,8 @@ spec:
         image: iamroyalreddy/mysql:8.0.41
         securityContext:
           runAsUser: 999
-        args: 
-          - "--default-authentication-plugin=mysql_native_password"
+        args: []
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql
-              key: MYSQL_ROOT_PASSWORD
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
