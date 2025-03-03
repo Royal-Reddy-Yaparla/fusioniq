@@ -3,7 +3,6 @@ kind: Secret
 metadata:
   name: backend
   namespace: fusioniq
-  tier: app
 type: Opaque
 data:
   SPRING_DATASOURCE_PASSWORD: QWRtaW5AMTIz  # Base64 for "Admin@123"
@@ -53,7 +52,6 @@ kind: Service
 metadata:
   name: backend
   namespace: fusioniq
-  tier: app
 spec:
   selector:
     name: backend
