@@ -80,7 +80,6 @@ metadata:
     project: fusioniq
     tier: db
 spec:
-  clusterIP: None
   ports:
   - protocol: TCP
     port: 3306 #service-port
