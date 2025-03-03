@@ -41,11 +41,11 @@ spec:
           runAsUser: 999
         args: []
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql
-              key: MYSQL_ROOT_PASSWORD
+        # - name: MYSQL_ROOT_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql
+        #       key: MYSQL_ROOT_PASSWORD
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
