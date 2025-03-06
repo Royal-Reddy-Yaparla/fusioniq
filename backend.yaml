@@ -4,7 +4,7 @@ metadata:
   name: backend
   namespace: fusioniq
 data:
-  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-master.fusioniq.svc.cluster.local:3306/prod?createDatabaseIfNotExist=true"
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql.fusioniq.svc.cluster.local:3306/prod?createDatabaseIfNotExist=true"
 ---
 apiVersion: v1
 kind: Secret
