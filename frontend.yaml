@@ -122,7 +122,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: iamroyalreddy/web:v1
+        image: iamroyalreddy/frontend:latest
         imagePullPolicy: Always
         volumeMounts:
           - name: nginx-conf
