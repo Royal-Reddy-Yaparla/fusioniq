@@ -85,7 +85,7 @@ data:
         }
 
         location /api/ {
-              proxy_pass http://backend:8080/;
+              proxy_pass http://backend.fusioniq.svc.cluster.local:8080/;
               proxy_http_version 1.1;
               proxy_set_header Host $host;
               proxy_set_header X-Real-IP $remote_addr;
@@ -107,7 +107,7 @@ metadata:
     project: fusioniq
     tier: web 
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels: # should match with pod
       name: web
