@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-router-config
+  namespace: fusioniq
+data:
+  mysql-router.conf: |
+    [DEFAULT]
+    logging_folder=/var/log/mysqlrouter
+    runtime_folder=/var/run/mysqlrouter
+    data_folder=/var/lib/mysqlrouter
+    keyring_path=/var/lib/mysqlrouter/keyring
+    
+    [logger]
+    level = INFO
+    
+    [metadata_cache:fusioniq]
+    router_id=1
+    bootstrap_server=mysql-0.mysql.fusioniq.svc.cluster.local:3306
+    user=replica
+    metadata_cluster=fusioniq
+    
+    [routing:read_only]
+    bind_address = 0.0.0.0
+    bind_port = 3307
+    mode = read-only
+    destination = metadata-cache://fusioniq/replicas
+    
+    [routing:read_write]
+    bind_address = 0.0.0.0
+    bind_port = 3306
+    mode = read-write
+    destination = metadata-cache://fusioniq/primary
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-router
+  namespace: fusioniq
+  labels:
+    app: mysql-router
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-router
+  template:
+    metadata:
+      labels:
+        app: mysql-router
+    spec:
+      containers:
+        - name: mysql-router
+          image: mysql/mysql-router:8.0
+          command: ["mysqlrouter", "--config", "/etc/mysqlrouter/mysql-router.conf"]
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mysqlrouter
+              readOnly: true
+          env:
+            - name: MYSQL_HOST
+              value: "mysql-0.mysql.fusioniq.svc.cluster.local"
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: MYSQL_PASSWORD
+      volumes:
+        - name: config
+          configMap:
+            name: mysql-router-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-router
+  namespace: fusioniq
+spec:
+  ports:
+    - name: read-write
+      port: 3306
+      targetPort: 3306
+    - name: read-only
+      port: 3307
+      targetPort: 3307
+  selector:
+    app: mysql-router
