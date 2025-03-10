@@ -47,11 +47,13 @@ spec:
     spec:
       containers:
         - name: mysql-router
-          image: mysql/mysql-router:latest
+          image: mysql/mysql-router:8.2.0
           command: ["mysqlrouter", "--config", "/etc/mysqlrouter/mysql-router.conf"]
           volumeMounts:
             - name: config
               mountPath: /etc/mysqlrouter
+            - name: mysqlrouter-data
+              mountPath: /var/lib/mysqlrouter
           env:
             - name: MYSQL_USER
               valueFrom:
@@ -67,6 +69,8 @@ spec:
         - name: config
           configMap:
             name: mysql-router-config
+        - name: mysqlrouter-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
