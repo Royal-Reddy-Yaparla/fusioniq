@@ -6,38 +6,35 @@ metadata:
 data:
   mysql-router.conf: |
     [DEFAULT]
-    logging_folder=/var/log/mysqlrouter
-    runtime_folder=/var/run/mysqlrouter
-    
+    logging_folder = /var/log/mysqlrouter
+    runtime_folder = /var/run/mysqlrouter
+    data_folder = /var/lib/mysqlrouter
+
     [logger]
     level = INFO
-    
+
     [metadata_cache:fusioniq]
-    router_id=1
-    bootstrap_server=mysql-0.mysql.fusioniq.svc.cluster.local:3306
-    user=replica
-    metadata_cluster=fusioniq
-    
-    [routing:read_only]
-    bind_address = 0.0.0.0
-    bind_port = 3307
-    mode = read-only
-    destination = metadata-cache://fusioniq/replicas
-    
+    bootstrap_server = mysql-master.fusioniq.svc.cluster.local:3306
+    user = replica
+    metadata_cluster = fusioniq
+
     [routing:read_write]
     bind_address = 0.0.0.0
     bind_port = 3306
     mode = read-write
     destination = metadata-cache://fusioniq/primary
 
+    [routing:read_only]
+    bind_address = 0.0.0.0
+    bind_port = 3307
+    mode = read-only
+    destination = metadata-cache://fusioniq/replicas
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-router
   namespace: fusioniq
-  labels:
-    app: mysql-router
 spec:
   replicas: 1
   selector:
@@ -48,24 +45,14 @@ spec:
       labels:
         app: mysql-router
     spec:
-      securityContext:
-        runAsUser: 999
-        fsGroup: 999
       containers:
         - name: mysql-router
-          image: mysql/mysql-router
+          image: mysql/mysql-router:8.2.0
           command: ["mysqlrouter", "--config", "/etc/mysqlrouter/mysql-router.conf"]
           volumeMounts:
             - name: config
               mountPath: /etc/mysqlrouter
-              readOnly: true
-            - name: mysql-router-data
-              mountPath: /var/lib/mysqlrouter
           env:
-            - name: MYSQL_HOST
-              value: "mysql-0.mysql.fusioniq.svc.cluster.local"
-            - name: MYSQL_PORT
-              value: "3306"
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
@@ -80,8 +67,6 @@ spec:
         - name: config
           configMap:
             name: mysql-router-config
-        - name: mysql-router-data
-          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
