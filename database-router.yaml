@@ -8,9 +8,7 @@ data:
     [DEFAULT]
     logging_folder=/var/log/mysqlrouter
     runtime_folder=/var/run/mysqlrouter
-    data_folder=/var/lib/mysqlrouter
-    keyring_path=/var/lib/mysqlrouter/keyring
-    
+        
     [logger]
     level = INFO
     
