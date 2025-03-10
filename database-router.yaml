@@ -8,7 +8,6 @@ data:
     [DEFAULT]
     logging_folder=/var/log/mysqlrouter
     runtime_folder=/var/run/mysqlrouter
-    data_folder=/var/lib/mysqlrouter
     
     [logger]
     level = INFO
