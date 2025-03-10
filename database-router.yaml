@@ -49,6 +49,9 @@ spec:
       labels:
         app: mysql-router
     spec:
+      securityContext:
+        runAsUser: 999
+        fsGroup: 999
       containers:
         - name: mysql-router
           image: mysql/mysql-router
@@ -57,6 +60,8 @@ spec:
             - name: config
               mountPath: /etc/mysqlrouter
               readOnly: true
+            - name: mysql-router-data
+              mountPath: /var/lib/mysqlrouter
           env:
             - name: MYSQL_HOST
               value: "mysql-0.mysql.fusioniq.svc.cluster.local"
@@ -76,6 +81,8 @@ spec:
         - name: config
           configMap:
             name: mysql-router-config
+        - name: mysql-router-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
