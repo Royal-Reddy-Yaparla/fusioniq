@@ -64,11 +64,17 @@ spec:
                 secretKeyRef:
                   name: mysql
                   key: MYSQL_PASSWORD
+      volumeMounts:
+          - name: config
+            mountPath: /etc/mysqlrouter
+            readOnly: true
+          - name: data
+            mountPath: /var/lib/mysqlrouter
       volumes:
         - name: config
           configMap:
             name: mysql-router-config
-        - name: mysqlrouter-data
+        - name: data
           emptyDir: {}
 ---
 apiVersion: v1
