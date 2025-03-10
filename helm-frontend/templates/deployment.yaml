@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: fusioniq 
+  labels:
+    name: web
+    project: fusioniq
+    tier: web 
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels: # should match with pod
+      name: web
+      project: fusioniq
+      tier: web
+  template: # pod defination
+    metadata:
+      labels: # pod labels
+        name: web
+        project: fusioniq
+        tier: web
+    spec:
+      containers:
+      - name: web
+        image: iamroyalreddy/frontend:{{ .Values.deployment.imageVersion }}"
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+            readOnly: true  
+      volumes:
+      - name: nginx-conf
+        configMap:
+            name: web
+            items:
+              - key: nginx.conf
+                path: nginx.conf    

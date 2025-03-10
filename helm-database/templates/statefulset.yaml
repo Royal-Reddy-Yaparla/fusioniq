@@ -22,13 +22,30 @@ spec:
         project: fusioniq
         tier: db
     spec:
+      securityContext:
+        fsGroup: 999
       containers:
       - name: mysql
         image: "iamroyalreddy/mysql:{{ .Values.statefulset.imageVersion }}"
+        securityContext:
+          runAsUser: 999
         args: []
-        envFrom:
-        - secretRef:
-            name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: MYSQL_PASSWORD  
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: MYSQL_USER  
         volumeMounts:
         - name: mysql
           mountPath: /var/lib/mysql
