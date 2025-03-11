@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: "iamroyalreddy/backend:{{ .Values.deployment.imageVersion }}"
+        image: "iamroyalreddy/fusion:{{ .Values.deployment.imageVersion }}"
         imagePullPolicy: Always
         env:
         - name: SPRING_DATASOURCE_URL  # Fixed Name
