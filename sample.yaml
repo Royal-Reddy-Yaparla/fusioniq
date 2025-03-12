@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: iamroyalreddy/frontend:latest
+        image: nginx:latest
         imagePullPolicy: Always
 ---
 apiVersion: v1
