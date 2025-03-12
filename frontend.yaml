@@ -14,7 +14,7 @@ data:
       # multi_accept on;
     }
 
-    http {~
+    http {
 
       ##
       # Basic Settings
