@@ -1,0 +1,17 @@
+aws ec2 describe-instances --instance-ids i-0e016d3e5d76d1b61 \
+  --query 'Reservations[].Instances[].MetadataOptions'
+
+    {
+        "State": "applied",
+        "HttpTokens": "required",
+        "HttpPutResponseHopLimit": 1,
+        "HttpEndpoint": "enabled",
+        "HttpProtocolIpv6": "disabled",
+        "InstanceMetadataTags": "disabled"
+    }
+]
+
+solution
+here "HttpTokens": "required" 
+When HttpTokens is set to "required", the EBS CSI driver cannot access the EC2 Instance Metadata Service (IMDS) without providing a token.
+For Kubernetes and EBS CSI driver to work correctly, HttpTokens should be set to "optional"

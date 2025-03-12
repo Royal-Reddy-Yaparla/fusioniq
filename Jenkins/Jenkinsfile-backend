@@ -35,3 +35,7 @@ pipeline {
     }
         
 }
+
+// deploy with images version
+// sed -i 's/IMAGE_VERSION/${params.version}/g' values.yaml
+// helm upgrade --install backend -n fusioniq .
