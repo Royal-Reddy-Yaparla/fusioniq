@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: iamroyalreddy/frontend:{{ .Values.deployment.imageVersion }}"
+        image: "iamroyalreddy/frontend:{{ .Values.deployment.imageVersion }}"
         imagePullPolicy: Always
         volumeMounts:
           - name: nginx-conf
